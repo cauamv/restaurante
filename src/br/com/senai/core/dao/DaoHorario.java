@@ -17,4 +17,6 @@ public interface DaoHorario {
 
 	public List<Horario> listarPor(Restaurante restaurante);
 	
+	public int contarPor(int idDaCategoria);
+	
 }

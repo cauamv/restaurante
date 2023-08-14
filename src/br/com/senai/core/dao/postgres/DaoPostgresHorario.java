@@ -37,6 +37,9 @@ public class DaoPostgresHorario implements DaoHorario {
 			+ " FROM horarios_atendimento h, restaurantes r, categorias c " 
 			+ " WHERE h.id_restaurante = r.id"
 			+ " AND r.id_categoria = c.id" + " AND r.id = ?";
+	
+	private final String COUNT_BY_REST = "SELECT Count(*) qtde " + "FROM horarios_atendimento h "
+			+ "WHERE h.id_restaurante = ?";
 
 	private Connection conexao;
 
@@ -173,4 +176,24 @@ public class DaoPostgresHorario implements DaoHorario {
 		}
 	}
 
+	@Override
+	public int contarPor(int idDoRestaurante) {
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		try {
+			ps = conexao.prepareStatement(COUNT_BY_REST);
+			ps.setInt(1, idDoRestaurante);
+			rs = ps.executeQuery();
+			if (rs.next()) {
+				return rs.getInt("qtde");
+			}
+			return 0;
+		} catch (Exception e) {
+			throw new RuntimeException("Ocorreu um erro ao contar os horários. " + "Motivo: " + e.getMessage());
+		} finally {
+			ManagerDb.getInstance().fechar(ps);
+			ManagerDb.getInstance().fechar(rs);
+		}
+
+	}
 }

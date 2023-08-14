@@ -8,7 +8,10 @@ public interface DaoRestaurante {
 	
 	public Restaurante buscarPor(int id);
 	
+	public void excluirPor(int id);
+	
 	public List<Restaurante> listarPor(String nome);
 	
+	public int contarPor(int idDaCategoria);
 }
 	

@@ -31,6 +31,22 @@ public class RestauranteService {
 		return dao.listarPor("%%");
 	}
 
+	public void excluirPor(int idDoRestaurante) {
+		if (idDoRestaurante > 0) {
+			
+			int qtdeDeHorarios = daoHorario.contarPor(idDoRestaurante);
+			if (qtdeDeHorarios > 0) {
+				throw new IllegalArgumentException("Não foi possivel excluir o restaurante. "
+						+ "Motivo: Existem " + qtdeDeHorarios + " horários vinculados ao restaurante");
+			}
+			
+			this.dao.excluirPor(idDoRestaurante);
+			
+		} else {
+			throw new IllegalArgumentException("O id para exclusão deve ser maior que zero");
+		}
+	}
+	
 	public Restaurante buscarPor(int idDoRestaurante) {
 		if (idDoRestaurante > 0) {
 			Restaurante restauranteEncontrado = this.dao.buscarPor(idDoRestaurante);
